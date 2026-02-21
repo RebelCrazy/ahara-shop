@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ahara — Tienda de moda contemporánea con diseño minimalista y calidad premium.">
+  <title>Ahara — Tienda Online</title>
+  <link rel="stylesheet" href="/assets/css/ahara.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <h5>Envío gratis a partir de 80€</h5>
+    <h5><a href="mailto:info@ahara.shop">info@ahara.shop</a> &nbsp;|&nbsp; Tel: +34 900 000 000</h5>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title"><a href="/">Ahara</a></div>
+
+    <button class="menu-toggle" id="menu-toggle" aria-label="Menú">☰</button>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      <ul>
+        <li class="active"><a href="/">Inicio</a></li>
+        <li>
+          <a href="/pages/shop.html">Tienda</a>
+          <ul>
+            <li><a href="/pages/shop.html?cat=ropa">Ropa</a></li>
+            <li><a href="/pages/shop.html?cat=outerwear">Outerwear</a></li>
+            <li><a href="/pages/shop.html?cat=calzado">Calzado</a></li>
+            <li><a href="/pages/shop.html?cat=accesorios">Accesorios</a></li>
+          </ul>
+        </li>
+        <li><a href="/pages/shop.html?sale=1">Ofertas</a></li>
+        <li><a href="#footer">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-cart" data-open-cart aria-label="Carrito">
+        <span>🛍</span>
+        <span class="cart-count">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- CART SIDEBAR -->
+<div id="cart-overlay" class="cart-overlay"></div>
+<aside id="cart-sidebar" class="cart-sidebar" aria-label="Carrito de compra">
+  <div class="cart-header">
+    <h2 class="cart-title">Tu Carrito</h2>
+    <button id="cart-close" class="cart-close" aria-label="Cerrar carrito">×</button>
+  </div>
+  <div id="cart-body" class="cart-body"></div>
+  <div id="cart-footer" class="cart-footer"></div>
+</aside>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Nueva Colección 2025</p>
+      <h1 class="hero-title">Diseño<br>sin<br>Límites</h1>
+      <p class="hero-desc">Moda contemporánea con materiales de calidad premium. Cada pieza diseñada para durar y destacar.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="/pages/shop.html" class="btn btn-white btn-lg">Explorar Tienda</a>
+        <a href="/pages/shop.html?sale=1" class="btn btn-outline btn-lg">Ver Ofertas</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=900&q=80" alt="Colección Ahara" loading="eager">
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS DESTACADOS -->
+<section class="section" id="featured">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">Destacados</h2>
+      <a href="/pages/shop.html" class="section-link">Ver todo →</a>
+    </div>
+    <div id="featured-grid" class="products-grid">
+      <!-- JS render -->
+      <div style="grid-column:1/-1;padding:3rem;text-align:center">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section class="section" id="categories">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">Categorías</h2>
+    </div>
+    <div id="categories-grid" class="categories-grid">
+      <!-- JS render -->
+    </div>
+  </div>
+</section>
+
+<!-- BANNER PROMO -->
+<section class="section">
+  <div class="section-inner">
+    <div class="promo-banner">
+      <div class="promo-text">
+        <div class="promo-eyebrow">Temporada limitada</div>
+        <h2 class="promo-title">Hasta 40%<br>de descuento</h2>
+        <p class="promo-subtitle">En selección de prendas de temporada anterior.</p>
+      </div>
+      <a href="/pages/shop.html?sale=1" class="btn btn-white btn-lg">Ver Ofertas</a>
+    </div>
+  </div>
+</section>
+
+<!-- NUEVOS PRODUCTOS -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2 class="section-title">Novedades</h2>
+      <a href="/pages/shop.html" class="section-link">Ver todo →</a>
+    </div>
+    <div id="new-grid" class="products-grid">
+      <div style="grid-column:1/-1;padding:3rem;text-align:center">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer" id="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-title">Ahara</div>
+        <p class="footer-brand-desc">Moda contemporánea con materiales premium. Diseño sin límites, calidad sin compromisos.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Contacto</h3>
+          <a href="mailto:info@ahara.shop">info@ahara.shop</a>
+          <p>+34 900 000 000</p>
+          <p>Madrid, España</p>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Tienda</h3>
+          <a href="/pages/shop.html?cat=ropa">Ropa</a>
+          <a href="/pages/shop.html?cat=calzado">Calzado</a>
+          <a href="/pages/shop.html?cat=accesorios">Accesorios</a>
+          <a href="/pages/shop.html?sale=1">Ofertas</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Síguenos</h3>
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
+          <a href="#">Facebook</a>
+          <a href="#">Pinterest</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Ahara. Todos los derechos reservados.</span>
+      <span style="display:flex;gap:1.5rem;">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+        <a href="#">Cookies</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" aria-label="Volver arriba">↑</button>
+
+<script src="/assets/js/shop.js"></script>
+<script>
+  // Render featured products
+  (async () => {
+    const products = await Products.getAll();
+
+    // Featured (first 4)
+    const featured = products.slice(0, 4);
+    document.getElementById('featured-grid').innerHTML = featured.map(renderProductCard).join('');
+
+    // New (badge Nuevo or last 4)
+    const newProds = products.filter(p => p.badge === 'Nuevo').concat(
+      products.filter(p => p.badge !== 'Nuevo')
+    ).slice(0, 4);
+    document.getElementById('new-grid').innerHTML = newProds.map(renderProductCard).join('');
+
+    // Categories
+    const cats = await Products.getCategories();
+    document.getElementById('categories-grid').innerHTML = cats.map(cat => `
+      <a href="/pages/shop.html?cat=${cat.slug}" class="category-card">
+        <img src="${cat.image}" alt="${cat.name}" loading="lazy">
+        <div class="category-overlay">
+          <h3 class="category-name">${cat.name}</h3>
+          <span class="category-count">${cat.count} producto${cat.count !== 1 ? 's' : ''}</span>
+        </div>
+      </a>
+    `).join('');
+  })();
+</script>
+</body>
+</html>

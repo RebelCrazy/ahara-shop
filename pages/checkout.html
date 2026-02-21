@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Ahara</title>
+  <link rel="stylesheet" href="/assets/css/ahara.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
+  <!-- Stripe JS -->
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title"><a href="/">Ahara</a></div>
+    <nav class="main-nav" style="font-size:13px;color:var(--gray)">
+      <ul>
+        <li><a href="/pages/cart.html" style="color:var(--gray)">← Volver al carrito</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <span style="font-size:13px;color:var(--gray)">🔒 Pago seguro</span>
+    </div>
+  </div>
+</header>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb">
+      <a href="/">Inicio</a><span>›</span>
+      <a href="/pages/cart.html">Carrito</a><span>›</span>
+      <span>Checkout</span>
+    </div>
+    <h1 class="page-title">Finalizar Compra</h1>
+  </div>
+</div>
+
+<div style="padding:0 4vw 6vw;">
+  <div id="checkout-empty" style="display:none;text-align:center;padding:5rem 2rem">
+    <p style="font-size:24px;margin-bottom:1.5rem">Tu carrito está vacío</p>
+    <a href="/pages/shop.html" class="btn btn-white btn-lg">Ir a la tienda</a>
+  </div>
+
+  <div id="checkout-main" class="checkout-grid">
+    <!-- FORM -->
+    <div class="checkout-form-col">
+
+      <!-- Contacto -->
+      <div style="margin-bottom:2.5rem">
+        <h2 class="form-section-title">Información de contacto</h2>
+        <div class="form-row">
+          <label for="email">Email *</label>
+          <input type="email" id="email" placeholder="tu@email.com" required>
+        </div>
+        <div class="form-row">
+          <label for="phone">Teléfono *</label>
+          <input type="tel" id="phone" placeholder="+34 600 000 000" required>
+        </div>
+      </div>
+
+      <!-- Envío -->
+      <div style="margin-bottom:2.5rem">
+        <h2 class="form-section-title">Dirección de envío</h2>
+        <div class="form-cols">
+          <div class="form-row">
+            <label for="first-name">Nombre *</label>
+            <input type="text" id="first-name" placeholder="Juan" required>
+          </div>
+          <div class="form-row">
+            <label for="last-name">Apellidos *</label>
+            <input type="text" id="last-name" placeholder="García" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="address">Dirección *</label>
+          <input type="text" id="address" placeholder="Calle Ejemplo, 123" required>
+        </div>
+        <div class="form-row">
+          <label for="address2">Apartamento, suite, etc. (opcional)</label>
+          <input type="text" id="address2" placeholder="Piso 2, Puerta A">
+        </div>
+        <div class="form-cols">
+          <div class="form-row">
+            <label for="city">Ciudad *</label>
+            <input type="text" id="city" placeholder="Madrid" required>
+          </div>
+          <div class="form-row">
+            <label for="postal">Código postal *</label>
+            <input type="text" id="postal" placeholder="28001" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="country">País *</label>
+          <select id="country">
+            <option value="ES">España</option>
+            <option value="MX">México</option>
+            <option value="AR">Argentina</option>
+            <option value="CO">Colombia</option>
+            <option value="CL">Chile</option>
+            <option value="PE">Perú</option>
+            <option value="US">Estados Unidos</option>
+            <option value="FR">Francia</option>
+            <option value="DE">Alemania</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Pago -->
+      <div>
+        <h2 class="form-section-title">Pago</h2>
+        <p style="font-size:13px;color:var(--gray);margin-bottom:1rem">
+          Todos los datos de tarjeta son procesados de forma segura por Stripe.
+          Ahara nunca almacena tu información de pago.
+        </p>
+        <div id="stripe-card-element"></div>
+        <div id="payment-message"></div>
+        <button id="pay-btn" class="btn btn-white btn-full btn-lg" onclick="handlePayment()" 
+          style="font-size:18px;padding:1.1rem">
+          <span id="pay-btn-text">Pagar <span id="pay-amount"></span></span>
+          <span id="pay-spinner" style="display:none">
+            <span class="loading-spinner" style="width:20px;height:20px;border-width:2px;margin:0"></span>
+          </span>
+        </button>
+        <p style="font-size:12px;color:var(--gray);text-align:center;margin-top:1rem">
+          Al confirmar aceptas nuestros <a href="#">Términos y condiciones</a> y <a href="#">Política de privacidad</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="checkout-summary-col">
+      <h3 style="font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:1px solid var(--border-solid)">
+        Tu pedido
+      </h3>
+      <div id="order-items"></div>
+      <div style="margin-top:1rem">
+        <div class="cart-summary-row">
+          <span style="font-size:14px">Subtotal</span>
+          <span id="order-subtotal" style="font-size:14px">—</span>
+        </div>
+        <div class="cart-summary-row">
+          <span style="font-size:14px">Envío</span>
+          <span id="order-shipping" style="font-size:14px">—</span>
+        </div>
+        <div class="cart-summary-row cart-summary-total" style="margin-top:.5rem;padding-top:1rem;border-top:1px solid var(--border-solid);border-bottom:none">
+          <span>Total</span>
+          <span id="order-total">—</span>
+        </div>
+      </div>
+
+      <!-- Códigos promo -->
+      <div style="margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.5rem">
+        <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:.5rem">Código de descuento</label>
+        <div style="display:flex;gap:0">
+          <input type="text" id="promo-input" placeholder="AHARA10" style="border-right:none">
+          <button class="btn btn-outline" onclick="applyPromo()" style="flex-shrink:0;white-space:nowrap;border-radius:0">Aplicar</button>
+        </div>
+        <div id="promo-msg" style="font-size:13px;margin-top:.5rem"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/js/shop.js"></script>
+<script>
+  // ============================================================
+  // STRIPE SETUP
+  // Tu clave pública de Stripe (reemplazar con la real)
+  // ============================================================
+  const STRIPE_PK = 'pk_test_REPLACE_WITH_YOUR_STRIPE_PUBLIC_KEY';
+  let stripe, cardElement, clientSecret;
+  let discount = 0;
+
+  const PROMO_CODES = {
+    'AHARA10': 0.10,
+    'BIENVENIDO': 0.15,
+    'VIP20': 0.20
+  };
+
+  function getTotal() {
+    const subtotal = Cart.total();
+    const shipping = subtotal >= 80 ? 0 : 4.99;
+    const discountAmt = subtotal * discount;
+    return { subtotal, shipping, discount: discountAmt, total: subtotal + shipping - discountAmt };
+  }
+
+  function renderSummary() {
+    const items = Cart.get();
+    if (items.length === 0) {
+      document.getElementById('checkout-empty').style.display = 'block';
+      document.getElementById('checkout-main').style.display = 'none';
+      return;
+    }
+
+    document.getElementById('order-items').innerHTML = items.map(item => `
+      <div class="order-item-row">
+        <img class="order-item-img" src="${item.image}" alt="${item.name}">
+        <div class="order-item-details">
+          <div class="order-item-name">${item.name}</div>
+          <div style="font-size:12px;color:var(--gray)">${item.variant || ''} × ${item.qty}</div>
+        </div>
+        <div class="order-item-price-col">${fmt(item.price * item.qty)}</div>
+      </div>`).join('');
+
+    const { subtotal, shipping, discount: disc, total } = getTotal();
+    document.getElementById('order-subtotal').textContent = fmt(subtotal);
+    document.getElementById('order-shipping').innerHTML = shipping === 0
+      ? '<span style="color:#4CAF50">Gratis</span>' : fmt(shipping);
+    document.getElementById('order-total').textContent = fmt(total);
+    document.getElementById('pay-amount').textContent = fmt(total);
+  }
+
+  function applyPromo() {
+    const code = document.getElementById('promo-input').value.trim().toUpperCase();
+    const msg = document.getElementById('promo-msg');
+    if (PROMO_CODES[code]) {
+      discount = PROMO_CODES[code];
+      msg.innerHTML = `<span style="color:#4CAF50">✓ Descuento del ${(discount*100).toFixed(0)}% aplicado</span>`;
+      renderSummary();
+    } else {
+      msg.innerHTML = `<span style="color:#ff6b6b">Código no válido</span>`;
+    }
+  }
+
+  // Init Stripe
+  async function initStripe() {
+    if (STRIPE_PK.includes('REPLACE')) {
+      // Demo mode — show card element placeholder
+      document.getElementById('stripe-card-element').innerHTML = `
+        <div style="border:1px solid var(--border-solid);padding:1rem;font-size:14px;color:var(--gray)">
+          💳 Elemento de tarjeta Stripe (configura tu clave en el Worker)
+        </div>`;
+      return;
+    }
+
+    stripe = Stripe(STRIPE_PK);
+    const elements = stripe.elements({
+      appearance: {
+        theme: 'night',
+        variables: {
+          colorPrimary: '#ffffff',
+          colorBackground: '#111111',
+          colorText: '#ffffff',
+          colorDanger: '#ff6b6b',
+          fontFamily: 'Lato, sans-serif',
+          borderRadius: '0px'
+        }
+      }
+    });
+
+    cardElement = elements.create('payment');
+    cardElement.mount('#stripe-card-element');
+  }
+
+  async function handlePayment() {
+    const btn = document.getElementById('pay-btn');
+    const btnText = document.getElementById('pay-btn-text');
+    const spinner = document.getElementById('pay-spinner');
+    const msgEl = document.getElementById('payment-message');
+
+    // Validate form
+    const required = ['email','phone','first-name','last-name','address','city','postal'];
+    for (const id of required) {
+      if (!document.getElementById(id).value.trim()) {
+        document.getElementById(id).focus();
+        msgEl.textContent = 'Por favor completa todos los campos requeridos.';
+        return;
+      }
+    }
+
+    if (STRIPE_PK.includes('REPLACE')) {
+      // Demo mode
+      simulateOrder();
+      return;
+    }
+
+    btnText.style.display = 'none';
+    spinner.style.display = 'block';
+    btn.disabled = true;
+    msgEl.textContent = '';
+
+    try {
+      // 1. Create payment intent via Cloudflare Worker
+      const { total } = getTotal();
+      const piRes = await fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: Math.round(total * 100), // centimos
+          currency: 'eur',
+          metadata: {
+            items: JSON.stringify(Cart.get().map(i => `${i.name} x${i.qty}`)),
+            customer: document.getElementById('email').value
+          }
+        })
+      });
+      const { clientSecret: cs, error: piError } = await piRes.json();
+      if (piError) throw new Error(piError);
+
+      // 2. Confirm payment
+      const { error: confirmError } = await stripe.confirmPayment({
+        clientSecret: cs,
+        elements: stripe.elements({ clientSecret: cs }),
+        confirmParams: {
+          return_url: window.location.origin + '/pages/success.html',
+          receipt_email: document.getElementById('email').value,
+          shipping: {
+            name: `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`,
+            address: {
+              line1: document.getElementById('address').value,
+              line2: document.getElementById('address2').value,
+              city: document.getElementById('city').value,
+              postal_code: document.getElementById('postal').value,
+              country: document.getElementById('country').value
+            }
+          }
+        }
+      });
+
+      if (confirmError) throw new Error(confirmError.message);
+
+    } catch (err) {
+      msgEl.textContent = err.message || 'Error al procesar el pago. Por favor inténtalo de nuevo.';
+      btnText.style.display = 'block';
+      spinner.style.display = 'none';
+      btn.disabled = false;
+    }
+  }
+
+  function simulateOrder() {
+    // Demo: simulate successful order
+    const btn = document.getElementById('pay-btn');
+    btn.textContent = 'Procesando...';
+    btn.disabled = true;
+    setTimeout(() => {
+      Cart.clear();
+      const orderId = 'AHR-' + Date.now().toString(36).toUpperCase();
+      window.location = `/pages/success.html?order=${orderId}`;
+    }, 1800);
+  }
+
+  renderSummary();
+  initStripe();
+</script>
+</body>
+</html>

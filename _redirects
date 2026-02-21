@@ -1,0 +1,8 @@
+# Cloudflare Pages redirects
+# Redirigir /shop -> /pages/shop.html para URLs limpias
+/shop /pages/shop.html 301
+/tienda /pages/shop.html 301
+/carrito /pages/cart.html 301
+/checkout /pages/checkout.html 301
+/success /pages/success.html 301
+/producto/* /pages/product.html?slug=:splat 301

@@ -1,0 +1,14 @@
+name = "ahara-shop"
+compatibility_date = "2024-01-01"
+pages_build_output_dir = "."
+
+# Variables de entorno — configura en Cloudflare Dashboard
+# NO pongas claves secretas aquí, usa el Dashboard
+
+[vars]
+ENVIRONMENT = "production"
+
+# Secretos — configurar en: 
+# Dashboard → Pages → tu-proyecto → Settings → Environment variables
+# Variable: STRIPE_SECRET_KEY = sk_live_...
+# Variable: STRIPE_WEBHOOK_SECRET = whsec_...

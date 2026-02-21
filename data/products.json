@@ -1,0 +1,167 @@
+{
+  "products": [
+    {
+      "id": "prod_001",
+      "slug": "camiseta-esencial-negra",
+      "name": "Camiseta Esencial",
+      "category": "ropa",
+      "price": 29.99,
+      "comparePrice": 49.99,
+      "description": "La camiseta definitiva en algodón premium 100%. Corte recto, cuello redondo y acabado impecable. Disponible en varios colores.",
+      "details": "Material: 100% algodón pima\nCorte: Regular fit\nCuello: Redondo\nCuidados: Lavar a 30°C",
+      "images": [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+        "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800&q=80",
+        "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&q=80"
+      ],
+      "variants": {
+        "talla": ["XS","S","M","L","XL","XXL"],
+        "color": ["Negro","Blanco","Gris"]
+      },
+      "badge": "Oferta",
+      "stock": 50
+    },
+    {
+      "id": "prod_002",
+      "slug": "pantalon-urbano",
+      "name": "Pantalón Urbano",
+      "category": "ropa",
+      "price": 79.99,
+      "comparePrice": null,
+      "description": "Pantalón de corte urbano con tela técnica stretch. Perfecto para el día a día con un toque contemporáneo.",
+      "details": "Material: 95% algodón, 5% elastano\nCorte: Slim fit\nCintura: Elástica con cordón",
+      "images": [
+        "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=800&q=80",
+        "https://images.unsplash.com/photo-1542272604-787c3835535d?w=800&q=80"
+      ],
+      "variants": {
+        "talla": ["28","30","32","34","36"],
+        "color": ["Negro","Gris Oscuro"]
+      },
+      "badge": null,
+      "stock": 30
+    },
+    {
+      "id": "prod_003",
+      "slug": "chaqueta-minimalista",
+      "name": "Chaqueta Minimalista",
+      "category": "outerwear",
+      "price": 149.99,
+      "comparePrice": 199.99,
+      "description": "Chaqueta de diseño minimalista con tejido de alta calidad. Corte estructurado, forro interior y acabados premium.",
+      "details": "Material exterior: Poliéster reciclado\nForro: Viscosa\nCierre: YKK",
+      "images": [
+        "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
+        "https://images.unsplash.com/photo-1548126032-079a0fb0099d?w=800&q=80"
+      ],
+      "variants": {
+        "talla": ["S","M","L","XL"],
+        "color": ["Negro","Crema"]
+      },
+      "badge": "Oferta",
+      "stock": 15
+    },
+    {
+      "id": "prod_004",
+      "slug": "sudadera-oversize",
+      "name": "Sudadera Oversize",
+      "category": "ropa",
+      "price": 64.99,
+      "comparePrice": null,
+      "description": "Sudadera oversize de algodón grueso con capucha. El equilibrio perfecto entre confort y estilo urbano.",
+      "details": "Material: 380gsm algodón French Terry\nCorte: Oversize\nCapucha: Doble tela",
+      "images": [
+        "https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=800&q=80",
+        "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80"
+      ],
+      "variants": {
+        "talla": ["S","M","L","XL","XXL"],
+        "color": ["Negro","Gris","Blanco Roto"]
+      },
+      "badge": "Nuevo",
+      "stock": 45
+    },
+    {
+      "id": "prod_005",
+      "slug": "zapatillas-canvas",
+      "name": "Zapatillas Canvas",
+      "category": "calzado",
+      "price": 89.99,
+      "comparePrice": null,
+      "description": "Zapatillas de lona de alta calidad con suela de goma vulcanizada. Diseño limpio y versátil para cualquier look.",
+      "details": "Upper: Lona 100% algodón\nSuela: Goma vulcanizada\nForro: Algodón",
+      "images": [
+        "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+        "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=800&q=80"
+      ],
+      "variants": {
+        "talla": ["38","39","40","41","42","43","44","45"],
+        "color": ["Negro","Blanco","Off-White"]
+      },
+      "badge": null,
+      "stock": 60
+    },
+    {
+      "id": "prod_006",
+      "slug": "mochila-urban",
+      "name": "Mochila Urban",
+      "category": "accesorios",
+      "price": 119.99,
+      "comparePrice": 159.99,
+      "description": "Mochila urbana de gran capacidad con múltiples bolsillos. Fabricada en nylon resistente al agua.",
+      "details": "Material: Nylon 600D\nCapacidad: 25L\nDimensiones: 45x30x15cm",
+      "images": [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+        "https://images.unsplash.com/photo-1622560480654-d96214fdc887?w=800&q=80"
+      ],
+      "variants": {
+        "color": ["Negro","Gris","Verde Militar"]
+      },
+      "badge": "Oferta",
+      "stock": 20
+    },
+    {
+      "id": "prod_007",
+      "slug": "cinturon-cuero",
+      "name": "Cinturón Cuero",
+      "category": "accesorios",
+      "price": 45.99,
+      "comparePrice": null,
+      "description": "Cinturón de cuero genuino con hebilla de metal. Acabado mate y costura reforzada.",
+      "details": "Material: Cuero genuino vacuno\nHebilla: Acero inoxidable\nAncho: 3.5cm",
+      "images": [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80"
+      ],
+      "variants": {
+        "talla": ["85cm","90cm","95cm","100cm","105cm"],
+        "color": ["Negro","Marrón"]
+      },
+      "badge": null,
+      "stock": 35
+    },
+    {
+      "id": "prod_008",
+      "slug": "gorra-clasica",
+      "name": "Gorra Clásica",
+      "category": "accesorios",
+      "price": 34.99,
+      "comparePrice": null,
+      "description": "Gorra de béisbol con bordado minimalista. Ajuste posterior con cierre de hebilla.",
+      "details": "Material: Algodón estructurado\nCierre: Hebilla metálica\nPerfil: Medio",
+      "images": [
+        "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80"
+      ],
+      "variants": {
+        "color": ["Negro","Blanco","Beige","Verde"]
+      },
+      "badge": "Nuevo",
+      "stock": 80
+    }
+  ],
+  "categories": [
+    { "slug": "ropa", "name": "Ropa", "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80", "count": 4 },
+    { "slug": "outerwear", "name": "Outerwear", "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&q=80", "count": 1 },
+    { "slug": "calzado", "name": "Calzado", "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80", "count": 1 },
+    { "slug": "accesorios", "name": "Accesorios", "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600&q=80", "count": 3 }
+  ]
+}

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Producto — Ahara</title>
+  <link rel="stylesheet" href="/assets/css/ahara.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <h5>Envío gratis a partir de 80€</h5>
+    <h5><a href="mailto:info@ahara.shop">info@ahara.shop</a></h5>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title"><a href="/">Ahara</a></div>
+    <button class="menu-toggle" id="menu-toggle">☰</button>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li class="active">
+          <a href="/pages/shop.html">Tienda</a>
+          <ul>
+            <li><a href="/pages/shop.html?cat=ropa">Ropa</a></li>
+            <li><a href="/pages/shop.html?cat=outerwear">Outerwear</a></li>
+            <li><a href="/pages/shop.html?cat=calzado">Calzado</a></li>
+            <li><a href="/pages/shop.html?cat=accesorios">Accesorios</a></li>
+          </ul>
+        </li>
+        <li><a href="/pages/shop.html?sale=1">Ofertas</a></li>
+        <li><a href="/#footer">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="btn-cart" data-open-cart>
+        <span>🛍</span>
+        <span class="cart-count">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="cart-overlay" class="cart-overlay"></div>
+<aside id="cart-sidebar" class="cart-sidebar">
+  <div class="cart-header">
+    <h2 class="cart-title">Tu Carrito</h2>
+    <button id="cart-close" class="cart-close">×</button>
+  </div>
+  <div id="cart-body" class="cart-body"></div>
+  <div id="cart-footer" class="cart-footer"></div>
+</aside>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb" id="breadcrumb">
+      <a href="/">Inicio</a><span>›</span>
+      <a href="/pages/shop.html">Tienda</a><span>›</span>
+      <span id="bc-name">Producto</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div style="padding:0 4vw 4vw;">
+  <div id="product-detail">
+    <div style="padding:6rem;text-align:center">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="section-inner" style="margin-top:4vw;">
+    <div class="section-header">
+      <h2 class="section-title">También te puede interesar</h2>
+    </div>
+    <div id="related-grid" class="products-grid"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer" id="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-title">Ahara</div>
+        <p class="footer-brand-desc">Moda contemporánea con materiales premium.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Contacto</h3>
+          <a href="mailto:info@ahara.shop">info@ahara.shop</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Tienda</h3>
+          <a href="/pages/shop.html">Ver todo</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Síguenos</h3>
+          <a href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Ahara.</span></div>
+  </div>
+</footer>
+
+<button id="back-to-top">↑</button>
+
+<script src="/assets/js/shop.js"></script>
+<script>
+  let currentProduct = null;
+  let selectedVariants = {};
+  let qty = 1;
+
+  async function init() {
+    const slug = new URLSearchParams(window.location.search).get('slug');
+    if (!slug) { window.location = '/pages/shop.html'; return; }
+
+    currentProduct = await Products.getBySlug(slug);
+    if (!currentProduct) { window.location = '/pages/shop.html'; return; }
+
+    document.title = `${currentProduct.name} — Ahara`;
+    document.getElementById('bc-name').textContent = currentProduct.name;
+
+    renderProduct(currentProduct);
+
+    // Related products (same category, different)
+    const all = await Products.getAll();
+    const related = all.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id).slice(0, 4);
+    document.getElementById('related-grid').innerHTML = related.length
+      ? related.map(renderProductCard).join('')
+      : '';
+  }
+
+  function renderProduct(p) {
+    const comparePrice = p.comparePrice
+      ? `<span class="price-old">${fmt(p.comparePrice)}</span>` : '';
+    const badge = p.badge ? `<span class="product-badge">${p.badge}</span>` : '';
+
+    // Variants HTML
+    let variantsHtml = '';
+    if (p.variants) {
+      for (const [key, options] of Object.entries(p.variants)) {
+        const labelKey = key.charAt(0).toUpperCase() + key.slice(1);
+        variantsHtml += `
+          <div class="variant-group">
+            <span class="variant-label">${labelKey}: <span id="selected-${key}" style="color:var(--gray-mid);font-weight:400">—</span></span>
+            <div class="variant-options">
+              ${options.map(opt => {
+                const isColor = key === 'color';
+                return `<button class="variant-option${isColor ? ' swatch' : ''}" 
+                  data-key="${key}" data-val="${opt}"
+                  ${isColor ? `style="background:${colorToHex(opt)}" title="${opt}"` : ''}
+                  onclick="selectVariant('${key}','${opt}',this)">
+                  ${isColor ? '' : opt}
+                </button>`;
+              }).join('')}
+            </div>
+          </div>`;
+        selectedVariants[key] = null;
+      }
+    }
+
+    // Details list
+    const detailLines = (p.details || '').split('\n').filter(Boolean);
+
+    document.getElementById('product-detail').innerHTML = `
+      <div class="product-detail">
+        <div class="product-gallery">
+          <div class="product-gallery-main">
+            <img id="main-img" src="${p.images[0]}" alt="${p.name}">
+          </div>
+          ${p.images.length > 1 ? `
+          <div class="product-gallery-thumbs">
+            ${p.images.map((img, i) => `
+              <div class="thumb-item ${i===0?'active':''}" onclick="switchImage('${img}',this)">
+                <img src="${img}" alt="${p.name} ${i+1}">
+              </div>`).join('')}
+          </div>` : ''}
+        </div>
+
+        <div class="product-detail-info">
+          <div class="product-detail-category">${p.category} ${badge}</div>
+          <h1 class="product-detail-title">${p.name}</h1>
+          
+          <div class="product-detail-price">
+            ${comparePrice}
+            <span class="${p.comparePrice ? 'price-sale' : ''}">${fmt(p.price)}</span>
+          </div>
+
+          <p class="product-description">${p.description}</p>
+
+          <hr class="product-divider">
+
+          ${variantsHtml}
+
+          <div class="qty-wrap" style="margin-bottom:1.5rem">
+            <button onclick="changeQty(-1)">−</button>
+            <input type="number" id="qty-input" value="1" min="1" max="99" onchange="qty=parseInt(this.value)||1">
+            <button onclick="changeQty(1)">+</button>
+          </div>
+
+          <div style="display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap">
+            <button class="btn btn-white btn-lg" style="flex:1;min-width:180px" onclick="addToCart()">
+              Añadir al carrito
+            </button>
+            <a href="/pages/checkout.html" class="btn btn-outline btn-lg" onclick="addToCart(false)">
+              Comprar ahora
+            </a>
+          </div>
+
+          <hr class="product-divider">
+
+          <div style="margin-bottom:1.5rem">
+            ${detailLines.map(line => `
+              <p class="product-meta">${line.includes(':') 
+                ? `${line.split(':')[0]}: <span>${line.split(':').slice(1).join(':')}</span>` 
+                : line}</p>
+            `).join('')}
+          </div>
+
+          <div style="display:flex;gap:1.5rem;font-size:13px;color:var(--gray)">
+            <span>✓ Envío gratis +80€</span>
+            <span>✓ Devolución 30 días</span>
+            <span>✓ Pago seguro</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function switchImage(src, el) {
+    document.getElementById('main-img').src = src;
+    document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function selectVariant(key, val, el) {
+    selectedVariants[key] = val;
+    document.getElementById(`selected-${key}`).textContent = val;
+    el.closest('.variant-options').querySelectorAll('.variant-option').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function changeQty(delta) {
+    qty = Math.max(1, Math.min(99, qty + delta));
+    document.getElementById('qty-input').value = qty;
+  }
+
+  function addToCart(openSidebar = true) {
+    if (!currentProduct) return;
+    const variantStr = Object.entries(selectedVariants)
+      .filter(([,v]) => v)
+      .map(([k,v]) => `${k}: ${v}`)
+      .join(', ');
+
+    Cart.add({
+      id: currentProduct.id,
+      name: currentProduct.name,
+      price: currentProduct.price,
+      image: currentProduct.images[0],
+      variant: variantStr
+    }, qty);
+
+    if (!openSidebar) {
+      setTimeout(() => window.location = '/pages/checkout.html', 200);
+    }
+  }
+
+  function colorToHex(name) {
+    const map = {
+      'negro': '#111', 'blanco': '#fff', 'gris': '#888',
+      'gris oscuro': '#333', 'crema': '#f5f0e8', 'beige': '#d4c5a9',
+      'marrón': '#7b4f28', 'verde': '#2d5a27', 'verde militar': '#4a5240',
+      'blanco roto': '#f0ede8', 'off-white': '#f0ede8', 'azul': '#1a3a5c'
+    };
+    return map[name.toLowerCase()] || '#555';
+  }
+
+  init();
+</script>
+</body>
+</html>

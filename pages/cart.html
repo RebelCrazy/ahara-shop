@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito — Ahara</title>
+  <link rel="stylesheet" href="/assets/css/ahara.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <h5>Envío gratis a partir de 80€</h5>
+    <h5><a href="mailto:info@ahara.shop">info@ahara.shop</a></h5>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title"><a href="/">Ahara</a></div>
+    <button class="menu-toggle" id="menu-toggle">☰</button>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/pages/shop.html">Tienda</a></li>
+        <li><a href="/pages/shop.html?sale=1">Ofertas</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="btn-cart" data-open-cart>
+        <span>🛍</span>
+        <span class="cart-count">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="cart-overlay" class="cart-overlay"></div>
+<aside id="cart-sidebar" class="cart-sidebar">
+  <div class="cart-header">
+    <h2 class="cart-title">Tu Carrito</h2>
+    <button id="cart-close" class="cart-close">×</button>
+  </div>
+  <div id="cart-body" class="cart-body"></div>
+  <div id="cart-footer" class="cart-footer"></div>
+</aside>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb">
+      <a href="/">Inicio</a><span>›</span><span>Carrito</span>
+    </div>
+    <h1 class="page-title">Tu Carrito</h1>
+  </div>
+</div>
+
+<div style="padding:0 4vw 6vw;">
+  <div id="cart-page-content">
+    <div style="padding:4rem;text-align:center"><div class="loading-spinner"></div></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-title">Ahara</div>
+        <p class="footer-brand-desc">Moda contemporánea con materiales premium.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col"><h3 class="footer-col-title">Tienda</h3><a href="/pages/shop.html">Ver todo</a></div>
+        <div class="footer-col"><h3 class="footer-col-title">Contacto</h3><a href="mailto:info@ahara.shop">info@ahara.shop</a></div>
+        <div class="footer-col"><h3 class="footer-col-title">Síguenos</h3><a href="#">Instagram</a></div>
+      </div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Ahara.</span></div>
+  </div>
+</footer>
+
+<button id="back-to-top">↑</button>
+
+<script src="/assets/js/shop.js"></script>
+<script>
+  function renderCartPage() {
+    const items = Cart.get();
+    const container = document.getElementById('cart-page-content');
+
+    if (items.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center;padding:6rem 2rem;border:1px solid var(--border-solid)">
+          <div style="font-size:72px;margin-bottom:1.5rem">🛍</div>
+          <h2 style="font-size:28px;text-transform:uppercase;margin-bottom:1rem">Tu carrito está vacío</h2>
+          <p style="color:var(--gray);margin-bottom:2rem">Aún no has añadido ningún producto.</p>
+          <a href="/pages/shop.html" class="btn btn-white btn-lg">Explorar Tienda</a>
+        </div>`;
+      return;
+    }
+
+    const subtotal = Cart.total();
+    const shipping = subtotal >= 80 ? 0 : 4.99;
+    const total = subtotal + shipping;
+
+    container.innerHTML = `
+      <div class="cart-page-grid">
+        <div class="cart-items-col">
+          <table>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="cart-table-body"></tbody>
+          </table>
+        </div>
+        <div class="cart-summary-col">
+          <h3 class="cart-summary-title">Resumen</h3>
+          <div class="cart-summary-row">
+            <span>Subtotal</span>
+            <span>${fmt(subtotal)}</span>
+          </div>
+          <div class="cart-summary-row">
+            <span>Envío</span>
+            <span>${shipping === 0 ? '<span style="color:#4CAF50">Gratis</span>' : fmt(shipping)}</span>
+          </div>
+          ${shipping > 0 ? `<p style="font-size:12px;color:var(--gray);margin:.5rem 0 1rem">
+            Te faltan ${fmt(80 - subtotal)} para envío gratis</p>` : ''}
+          <div class="cart-summary-row cart-summary-total">
+            <span>Total</span>
+            <span>${fmt(total)}</span>
+          </div>
+          <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:.7rem">
+            <a href="/pages/checkout.html" class="btn btn-white btn-full btn-lg">Finalizar Compra</a>
+            <a href="/pages/shop.html" class="btn btn-outline btn-full">Seguir comprando</a>
+          </div>
+          <div style="margin-top:1.5rem;display:flex;justify-content:center;gap:1rem;opacity:.5;font-size:12px">
+            <span>🔒 Pago seguro</span>
+            <span>💳 Visa/MC/Amex</span>
+          </div>
+        </div>
+      </div>`;
+
+    // Render table rows
+    document.getElementById('cart-table-body').innerHTML = items.map(item => `
+      <tr>
+        <td style="width:80px">
+          <img src="${item.image}" alt="${item.name}" style="width:70px;height:70px;object-fit:cover;border:1px solid var(--border)">
+        </td>
+        <td>
+          <div style="font-weight:700;text-transform:uppercase;font-size:15px;margin-bottom:.3rem">${item.name}</div>
+          ${item.variant ? `<div style="font-size:13px;color:var(--gray)">${item.variant}</div>` : ''}
+        </td>
+        <td>${fmt(item.price)}</td>
+        <td>
+          <div class="qty-wrap" style="margin:0">
+            <button onclick="Cart.updateQty('${item.cartKey}',-1);renderCartPage()">−</button>
+            <input type="number" value="${item.qty}" min="1" max="99" style="width:50px;height:40px"
+              onchange="Cart.setQty('${item.cartKey}',this.value);renderCartPage()">
+            <button onclick="Cart.updateQty('${item.cartKey}',1);renderCartPage()">+</button>
+          </div>
+        </td>
+        <td style="font-weight:700">${fmt(item.price * item.qty)}</td>
+        <td>
+          <button onclick="Cart.remove('${item.cartKey}');renderCartPage()" 
+            style="background:none;border:none;color:var(--gray);font-size:22px;cursor:pointer" title="Eliminar">×</button>
+        </td>
+      </tr>`).join('');
+  }
+
+  renderCartPage();
+
+  // Override Cart.save to re-render page
+  const origSave = Cart.save.bind(Cart);
+  Cart.save = function(items) {
+    localStorage.setItem(this.key, JSON.stringify(items));
+    document.querySelectorAll('.cart-count').forEach(el => el.textContent = this.count());
+    CartUI.render();
+    // Don't call renderCartPage here to avoid stack overflow from update()
+  };
+</script>
+</body>
+</html>

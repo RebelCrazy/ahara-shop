@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ahara Tienda — Explora toda nuestra colección de moda contemporánea.">
+  <title>Tienda — Ahara</title>
+  <link rel="stylesheet" href="/assets/css/ahara.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <h5>Envío gratis a partir de 80€</h5>
+    <h5><a href="mailto:info@ahara.shop">info@ahara.shop</a></h5>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-title"><a href="/">Ahara</a></div>
+    <button class="menu-toggle" id="menu-toggle">☰</button>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="/">Inicio</a></li>
+        <li class="active">
+          <a href="/pages/shop.html">Tienda</a>
+          <ul>
+            <li><a href="/pages/shop.html?cat=ropa">Ropa</a></li>
+            <li><a href="/pages/shop.html?cat=outerwear">Outerwear</a></li>
+            <li><a href="/pages/shop.html?cat=calzado">Calzado</a></li>
+            <li><a href="/pages/shop.html?cat=accesorios">Accesorios</a></li>
+          </ul>
+        </li>
+        <li><a href="/pages/shop.html?sale=1">Ofertas</a></li>
+        <li><a href="/#footer">Contacto</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="btn-cart" data-open-cart>
+        <span>🛍</span>
+        <span class="cart-count">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- CART SIDEBAR -->
+<div id="cart-overlay" class="cart-overlay"></div>
+<aside id="cart-sidebar" class="cart-sidebar">
+  <div class="cart-header">
+    <h2 class="cart-title">Tu Carrito</h2>
+    <button id="cart-close" class="cart-close">×</button>
+  </div>
+  <div id="cart-body" class="cart-body"></div>
+  <div id="cart-footer" class="cart-footer"></div>
+</aside>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="breadcrumb">
+      <a href="/">Inicio</a><span>›</span>
+      <span id="breadcrumb-current">Tienda</span>
+    </div>
+    <h1 class="page-title" id="page-title">Tienda</h1>
+  </div>
+</div>
+
+<!-- SHOP LAYOUT -->
+<div class="shop-layout" style="margin-top:0;border-top:none;">
+
+  <!-- SIDEBAR FILTROS -->
+  <aside class="shop-sidebar">
+    <div class="filter-group">
+      <div class="filter-title">Categorías</div>
+      <div id="cat-filters"></div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-title">Precio</div>
+      <div class="price-range">
+        <input type="range" id="price-range" min="0" max="300" value="300" step="5">
+        <div class="price-labels">
+          <span>0€</span>
+          <span id="price-max-label">300€</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <div class="filter-title">Disponibilidad</div>
+      <div class="filter-item">
+        <input type="checkbox" id="f-instock" checked>
+        <label for="f-instock">En stock</label>
+      </div>
+    </div>
+
+    <div class="filter-group" style="border-bottom:none">
+      <div class="filter-title">Oferta</div>
+      <div class="filter-item">
+        <input type="checkbox" id="f-sale" onchange="applyFilters()">
+        <label for="f-sale">Solo ofertas</label>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN PRODUCTS -->
+  <div class="shop-main">
+    <div class="shop-toolbar">
+      <span class="shop-count" id="shop-count">Cargando...</span>
+      <div class="shop-sort">
+        <select id="sort-select" onchange="applyFilters()">
+          <option value="default">Orden predeterminado</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+          <option value="name-asc">Nombre: A-Z</option>
+        </select>
+      </div>
+    </div>
+    <div id="shop-grid" class="products-grid">
+      <div style="grid-column:1/-1;padding:4rem;text-align:center">
+        <div class="loading-spinner"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer" id="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-title">Ahara</div>
+        <p class="footer-brand-desc">Moda contemporánea con materiales premium.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h3 class="footer-col-title">Contacto</h3>
+          <a href="mailto:info@ahara.shop">info@ahara.shop</a>
+          <p>+34 900 000 000</p>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Tienda</h3>
+          <a href="/pages/shop.html?cat=ropa">Ropa</a>
+          <a href="/pages/shop.html?cat=calzado">Calzado</a>
+          <a href="/pages/shop.html?sale=1">Ofertas</a>
+        </div>
+        <div class="footer-col">
+          <h3 class="footer-col-title">Síguenos</h3>
+          <a href="#">Instagram</a>
+          <a href="#">TikTok</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Ahara.</span>
+    </div>
+  </div>
+</footer>
+
+<button id="back-to-top">↑</button>
+
+<script src="/assets/js/shop.js"></script>
+<script>
+  let allProducts = [];
+  const params = new URLSearchParams(window.location.search);
+  const initCat = params.get('cat') || '';
+  const initSale = params.get('sale') === '1';
+
+  // Init price range
+  const priceRange = document.getElementById('price-range');
+  const priceLabel = document.getElementById('price-max-label');
+  priceRange.addEventListener('input', () => {
+    priceLabel.textContent = priceRange.value + '€';
+    applyFilters();
+  });
+
+  async function init() {
+    allProducts = await Products.getAll();
+    const cats = await Products.getCategories();
+
+    // Render cat filters
+    document.getElementById('cat-filters').innerHTML = `
+      <div class="filter-item">
+        <input type="radio" name="cat" id="cat-all" value="" ${!initCat ? 'checked' : ''} onchange="applyFilters()">
+        <label for="cat-all">Todas</label>
+      </div>
+      ${cats.map(c => `
+        <div class="filter-item">
+          <input type="radio" name="cat" id="cat-${c.slug}" value="${c.slug}" ${initCat === c.slug ? 'checked' : ''} onchange="applyFilters()">
+          <label for="cat-${c.slug}">${c.name} (${c.count})</label>
+        </div>
+      `).join('')}
+    `;
+
+    if (initSale) {
+      document.getElementById('f-sale').checked = true;
+    }
+
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const cat = document.querySelector('[name=cat]:checked')?.value || '';
+    const maxPrice = parseFloat(priceRange.value);
+    const onlySale = document.getElementById('f-sale').checked;
+    const sortVal = document.getElementById('sort-select').value;
+
+    let filtered = allProducts.filter(p => {
+      if (cat && p.category !== cat) return false;
+      if (p.price > maxPrice) return false;
+      if (onlySale && !p.comparePrice) return false;
+      return true;
+    });
+
+    if (sortVal === 'price-asc') filtered.sort((a,b) => a.price - b.price);
+    else if (sortVal === 'price-desc') filtered.sort((a,b) => b.price - a.price);
+    else if (sortVal === 'name-asc') filtered.sort((a,b) => a.name.localeCompare(b.name));
+
+    // Update title
+    const catLabel = cat ? (document.querySelector(`[name=cat][value="${cat}"]`)?.nextElementSibling?.textContent || cat) : 'Tienda';
+    document.getElementById('page-title').textContent = onlySale ? 'Ofertas' : catLabel;
+    document.getElementById('breadcrumb-current').textContent = onlySale ? 'Ofertas' : catLabel;
+    document.getElementById('shop-count').textContent = `${filtered.length} producto${filtered.length !== 1 ? 's' : ''}`;
+
+    document.getElementById('shop-grid').innerHTML = filtered.length
+      ? filtered.map(renderProductCard).join('')
+      : `<div style="grid-column:1/-1;padding:4rem;text-align:center;color:var(--gray)">
+           <p style="font-size:48px">🔍</p>
+           <p>No hay productos con estos filtros.</p>
+           <button class="btn btn-outline" onclick="resetFilters()">Limpiar filtros</button>
+         </div>`;
+  }
+
+  function resetFilters() {
+    document.getElementById('cat-all').checked = true;
+    priceRange.value = 300;
+    priceLabel.textContent = '300€';
+    document.getElementById('f-sale').checked = false;
+    applyFilters();
+  }
+
+  init();
+</script>
+</body>
+</html>
