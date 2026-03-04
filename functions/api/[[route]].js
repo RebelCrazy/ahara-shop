@@ -1,91 +1,90 @@
 /**
- * AHARA SHOP — Cloudflare Worker
+ * DARK REBEL SHOP — Cloudflare Pages Function
  * API para procesamiento de pagos con Stripe
- * 
- * Deploy: wrangler deploy
- * Variables de entorno (en Cloudflare Dashboard > Workers > Settings > Variables):
- *   STRIPE_SECRET_KEY = sk_live_... (o sk_test_... para pruebas)
+ *
+ * Variables de entorno (Cloudflare Dashboard → Pages → ahara-shop → Settings → Environment variables):
+ *   STRIPE_SECRET_KEY      = sk_live_... (o sk_test_... para pruebas)
+ *   STRIPE_WEBHOOK_SECRET  = whsec_...
  */
 
-export default {
-  async fetch(request, env) {
-    // CORS headers
-    const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    };
-
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders });
-    }
-
-    const url = new URL(request.url);
-    const path = url.pathname;
-
-    try {
-      // ── POST /api/create-payment-intent ──────────────────
-      if (path === '/api/create-payment-intent' && request.method === 'POST') {
-        const body = await request.json();
-        const { amount, currency = 'eur', metadata = {} } = body;
-
-        if (!amount || amount < 50) {
-          return jsonError('Importe inválido', 400, corsHeaders);
-        }
-
-        if (!env.STRIPE_SECRET_KEY) {
-          return jsonError('STRIPE_SECRET_KEY no configurada', 500, corsHeaders);
-        }
-
-        // Crear PaymentIntent en Stripe
-        const pi = await stripeRequest(env.STRIPE_SECRET_KEY, 'payment_intents', {
-          amount,
-          currency,
-          automatic_payment_methods: { enabled: true },
-          metadata
-        });
-
-        return json({ clientSecret: pi.client_secret }, corsHeaders);
-      }
-
-      // ── POST /api/webhook (Stripe webhooks) ──────────────
-      if (path === '/api/webhook' && request.method === 'POST') {
-        const sig = request.headers.get('stripe-signature');
-        const rawBody = await request.text();
-
-        if (env.STRIPE_WEBHOOK_SECRET) {
-          const isValid = await verifyStripeSignature(rawBody, sig, env.STRIPE_WEBHOOK_SECRET);
-          if (!isValid) return jsonError('Firma inválida', 400, corsHeaders);
-        }
-
-        const event = JSON.parse(rawBody);
-
-        switch (event.type) {
-          case 'payment_intent.succeeded':
-            // Aquí puedes: enviar email, actualizar inventario, etc.
-            console.log('Pago exitoso:', event.data.object.id);
-            break;
-          case 'payment_intent.payment_failed':
-            console.log('Pago fallido:', event.data.object.id);
-            break;
-        }
-
-        return json({ received: true }, corsHeaders);
-      }
-
-      // ── GET /api/health ──────────────────────────────────
-      if (path === '/api/health') {
-        return json({ status: 'ok', time: new Date().toISOString() }, corsHeaders);
-      }
-
-      return jsonError('Ruta no encontrada', 404, corsHeaders);
-
-    } catch (err) {
-      console.error(err);
-      return jsonError('Error interno del servidor: ' + err.message, 500, corsHeaders);
-    }
-  }
+// CORS headers comunes
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
 };
+
+export async function onRequest(context) {
+  const { request, env } = context;
+
+  // Preflight CORS
+  if (request.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  const url = new URL(request.url);
+  const path = url.pathname;
+
+  try {
+    // ── POST /api/create-payment-intent ──────────────────
+    if (path === '/api/create-payment-intent' && request.method === 'POST') {
+      const body = await request.json();
+      const { amount, currency = 'mxn', metadata = {} } = body;
+
+      if (!amount || amount < 50) {
+        return jsonError('Importe inválido', 400);
+      }
+
+      if (!env.STRIPE_SECRET_KEY) {
+        return jsonError('STRIPE_SECRET_KEY no configurada', 500);
+      }
+
+      const pi = await stripeRequest(env.STRIPE_SECRET_KEY, 'payment_intents', {
+        amount,
+        currency,
+        automatic_payment_methods: { enabled: true },
+        metadata
+      });
+
+      return json({ clientSecret: pi.client_secret });
+    }
+
+    // ── POST /api/webhook (Stripe webhooks) ──────────────
+    if (path === '/api/webhook' && request.method === 'POST') {
+      const sig = request.headers.get('stripe-signature');
+      const rawBody = await request.text();
+
+      if (env.STRIPE_WEBHOOK_SECRET) {
+        const isValid = await verifyStripeSignature(rawBody, sig, env.STRIPE_WEBHOOK_SECRET);
+        if (!isValid) return jsonError('Firma inválida', 400);
+      }
+
+      const event = JSON.parse(rawBody);
+
+      switch (event.type) {
+        case 'payment_intent.succeeded':
+          console.log('Pago exitoso:', event.data.object.id);
+          break;
+        case 'payment_intent.payment_failed':
+          console.log('Pago fallido:', event.data.object.id);
+          break;
+      }
+
+      return json({ received: true });
+    }
+
+    // ── GET /api/health ──────────────────────────────────
+    if (path === '/api/health') {
+      return json({ status: 'ok', time: new Date().toISOString() });
+    }
+
+    return jsonError('Ruta no encontrada', 404);
+
+  } catch (err) {
+    console.error(err);
+    return jsonError('Error interno del servidor: ' + err.message, 500);
+  }
+}
 
 // ── Stripe API helper ─────────────────────────────────────────
 async function stripeRequest(secretKey, endpoint, data) {
@@ -133,14 +132,14 @@ async function verifyStripeSignature(payload, sigHeader, secret) {
 }
 
 // ── Response helpers ─────────────────────────────────────────
-function json(data, headers = {}) {
+function json(data) {
   return new Response(JSON.stringify(data), {
-    headers: { 'Content-Type': 'application/json', ...headers }
+    headers: { 'Content-Type': 'application/json', ...corsHeaders }
   });
 }
-function jsonError(msg, status, headers = {}) {
+function jsonError(msg, status) {
   return new Response(JSON.stringify({ error: msg }), {
     status,
-    headers: { 'Content-Type': 'application/json', ...headers }
+    headers: { 'Content-Type': 'application/json', ...corsHeaders }
   });
 }
