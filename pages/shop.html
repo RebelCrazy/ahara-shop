@@ -6,6 +6,7 @@
   <meta name="description" content="Ahara Tienda — Explora toda nuestra colección de moda contemporánea.">
   <title>Tienda — Ahara</title>
   <link rel="stylesheet" href="/assets/css/ahara.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
 </head>
 <body>
@@ -22,7 +23,7 @@
 <header class="site-header">
   <div class="header-inner">
     <div class="site-title"><a href="/">Ahara</a></div>
-    <button class="menu-toggle" id="menu-toggle">☰</button>
+    <button class="menu-toggle" id="menu-toggle"><i data-lucide="menu"></i></button>
     <nav class="main-nav">
       <ul>
         <li><a href="/">Inicio</a></li>
@@ -41,7 +42,7 @@
     </nav>
     <div class="header-actions">
       <button class="btn-cart" data-open-cart>
-        <span>🛍</span>
+        <i data-lucide="shopping-bag"></i>
         <span class="cart-count">0</span>
       </button>
     </div>
@@ -53,7 +54,7 @@
 <aside id="cart-sidebar" class="cart-sidebar">
   <div class="cart-header">
     <h2 class="cart-title">Tu Carrito</h2>
-    <button id="cart-close" class="cart-close">×</button>
+    <button id="cart-close" class="cart-close"><i data-lucide="x"></i></button>
   </div>
   <div id="cart-body" class="cart-body"></div>
   <div id="cart-footer" class="cart-footer"></div>
@@ -162,7 +163,7 @@
   </div>
 </footer>
 
-<button id="back-to-top">↑</button>
+<button id="back-to-top"><i data-lucide="arrow-up"></i></button>
 
 <script src="/assets/js/shop.js"></script>
 <script>
@@ -245,6 +246,7 @@
   }
 
   init();
+  lucide.createIcons();
 </script>
 </body>
 </html>

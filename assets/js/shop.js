@@ -116,11 +116,12 @@ const CartUI = {
     if (items.length === 0) {
       body.innerHTML = `
         <div class="cart-empty">
-          <div class="cart-empty-icon">🛍</div>
+          <div class="cart-empty-icon"><i data-lucide="shopping-bag" style="width:48px;height:48px"></i></div>
           <p>Tu carrito está vacío</p>
           <a href="/pages/shop.html" class="btn btn-outline" style="margin-top:1rem">Ver tienda</a>
         </div>`;
       if (footer) footer.innerHTML = '';
+      if (typeof lucide !== 'undefined') lucide.createIcons();
       return;
     }
 
@@ -140,7 +141,7 @@ const CartUI = {
         </div>
         <div class="cart-item-right">
           <div class="cart-item-price">${fmt(item.price * item.qty)}</div>
-          <button class="cart-item-remove" onclick="Cart.remove('${item.cartKey}')" title="Eliminar">×</button>
+          <button class="cart-item-remove" onclick="Cart.remove('${item.cartKey}')" title="Eliminar"><i data-lucide="x"></i></button>
         </div>
       </div>
     `).join('');
@@ -155,6 +156,7 @@ const CartUI = {
         <a href="/pages/checkout.html" class="btn btn-white btn-full">Finalizar compra</a>
       `;
     }
+    if (typeof lucide !== 'undefined') lucide.createIcons();
   }
 };
 
@@ -298,7 +300,8 @@ function initMobileMenu() {
 
   toggle.addEventListener('click', () => {
     const isOpen = nav.classList.toggle('open');
-    toggle.textContent = isOpen ? '✕' : '☰';
+    toggle.innerHTML = isOpen ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
     document.body.style.overflow = isOpen ? 'hidden' : '';
   });
 }

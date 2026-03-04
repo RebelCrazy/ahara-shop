@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carrito — Ahara</title>
   <link rel="stylesheet" href="/assets/css/ahara.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
 </head>
 <body>
@@ -19,7 +20,7 @@
 <header class="site-header">
   <div class="header-inner">
     <div class="site-title"><a href="/">Ahara</a></div>
-    <button class="menu-toggle" id="menu-toggle">☰</button>
+    <button class="menu-toggle" id="menu-toggle"><i data-lucide="menu"></i></button>
     <nav class="main-nav">
       <ul>
         <li><a href="/">Inicio</a></li>
@@ -29,7 +30,7 @@
     </nav>
     <div class="header-actions">
       <button class="btn-cart" data-open-cart>
-        <span>🛍</span>
+        <i data-lucide="shopping-bag"></i>
         <span class="cart-count">0</span>
       </button>
     </div>
@@ -40,7 +41,7 @@
 <aside id="cart-sidebar" class="cart-sidebar">
   <div class="cart-header">
     <h2 class="cart-title">Tu Carrito</h2>
-    <button id="cart-close" class="cart-close">×</button>
+    <button id="cart-close" class="cart-close"><i data-lucide="x"></i></button>
   </div>
   <div id="cart-body" class="cart-body"></div>
   <div id="cart-footer" class="cart-footer"></div>
@@ -78,7 +79,7 @@
   </div>
 </footer>
 
-<button id="back-to-top">↑</button>
+<button id="back-to-top"><i data-lucide="arrow-up"></i></button>
 
 <script src="/assets/js/shop.js"></script>
 <script>
@@ -89,7 +90,7 @@
     if (items.length === 0) {
       container.innerHTML = `
         <div style="text-align:center;padding:6rem 2rem;border:1px solid var(--border-solid)">
-          <div style="font-size:72px;margin-bottom:1.5rem">🛍</div>
+          <div style="font-size:72px;margin-bottom:1.5rem"><i data-lucide="shopping-bag" style="width:72px;height:72px"></i></div>
           <h2 style="font-size:28px;text-transform:uppercase;margin-bottom:1rem">Tu carrito está vacío</h2>
           <p style="color:var(--gray);margin-bottom:2rem">Aún no has añadido ningún producto.</p>
           <a href="/pages/shop.html" class="btn btn-white btn-lg">Explorar Tienda</a>
@@ -139,7 +140,7 @@
             <a href="/pages/shop.html" class="btn btn-outline btn-full">Seguir comprando</a>
           </div>
           <div style="margin-top:1.5rem;display:flex;justify-content:center;gap:1rem;opacity:.5;font-size:12px">
-            <span>🔒 Pago seguro</span>
+            <span><i data-lucide="lock" style="width:12px;height:12px;vertical-align:middle"></i> Pago seguro</span>
             <span>💳 Visa/MC/Amex</span>
           </div>
         </div>
@@ -167,12 +168,13 @@
         <td style="font-weight:700">${fmt(item.price * item.qty)}</td>
         <td>
           <button onclick="Cart.remove('${item.cartKey}');renderCartPage()" 
-            style="background:none;border:none;color:var(--gray);font-size:22px;cursor:pointer" title="Eliminar">×</button>
+            style="background:none;border:none;color:var(--gray);font-size:22px;cursor:pointer" title="Eliminar"><i data-lucide="x" style="width:18px;height:18px;vertical-align:middle"></i></button>
         </td>
       </tr>`).join('');
   }
 
   renderCartPage();
+  lucide.createIcons();
 
   // Override Cart.save to re-render page
   const origSave = Cart.save.bind(Cart);
@@ -182,6 +184,7 @@
     CartUI.render();
     // Don't call renderCartPage here to avoid stack overflow from update()
   };
+  lucide.createIcons();
 </script>
 </body>
 </html>

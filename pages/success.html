@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>¡Pedido Confirmado! — Ahara</title>
   <link rel="stylesheet" href="/assets/css/ahara.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
 </head>
 <body>
@@ -14,7 +15,7 @@
     <div class="site-title"><a href="/">Ahara</a></div>
     <div class="header-actions">
       <button class="btn-cart" data-open-cart>
-        <span>🛍</span>
+        <i data-lucide="shopping-bag"></i>
         <span class="cart-count">0</span>
       </button>
     </div>
@@ -25,7 +26,7 @@
 <aside id="cart-sidebar" class="cart-sidebar">
   <div class="cart-header">
     <h2 class="cart-title">Tu Carrito</h2>
-    <button id="cart-close" class="cart-close">×</button>
+    <button id="cart-close" class="cart-close"><i data-lucide="x"></i></button>
   </div>
   <div id="cart-body" class="cart-body"></div>
   <div id="cart-footer" class="cart-footer"></div>
@@ -33,7 +34,7 @@
 
 <div style="padding:4vw;min-height:70vh;display:flex;align-items:center;justify-content:center">
   <div class="success-box">
-    <div class="success-icon">✓</div>
+    <div class="success-icon"><i data-lucide="check"></i></div>
     <h1 class="success-title">¡Pedido<br>Confirmado!</h1>
     <p class="success-order" id="order-num">Número de pedido: —</p>
     <p style="color:var(--gray-mid);font-weight:300;margin-bottom:2.5rem;line-height:1.7">
@@ -75,6 +76,7 @@
 
   // Clear cart after successful order
   Cart.clear();
+  lucide.createIcons();
 </script>
 </body>
 </html>
