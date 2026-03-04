@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Checkout — Ahara</title>
+  <title>Checkout — Dark Rebel</title>
   <link rel="stylesheet" href="/assets/css/ahara.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23111'/><text y='.9em' font-size='90' x='5'>A</text></svg>">
   <!-- Stripe JS -->
@@ -13,7 +13,7 @@
 
 <header class="site-header">
   <div class="header-inner">
-    <div class="site-title"><a href="/">Ahara</a></div>
+    <div class="site-title"><a href="/">Dark Rebel</a></div>
     <nav class="main-nav" style="font-size:13px;color:var(--gray)">
       <ul>
         <li><a href="/pages/cart.html" style="color:var(--gray)">← Volver al carrito</a></li>
@@ -55,7 +55,7 @@
         </div>
         <div class="form-row">
           <label for="phone">Teléfono *</label>
-          <input type="tel" id="phone" placeholder="+34 600 000 000" required>
+          <input type="tel" id="phone" placeholder="+52 3340079524" required>
         </div>
       </div>
 
@@ -83,7 +83,7 @@
         <div class="form-cols">
           <div class="form-row">
             <label for="city">Ciudad *</label>
-            <input type="text" id="city" placeholder="Madrid" required>
+            <input type="text" id="city" placeholder="Guadalajara" required>
           </div>
           <div class="form-row">
             <label for="postal">Código postal *</label>
@@ -94,7 +94,7 @@
           <label for="country">País *</label>
           <select id="country">
             <option value="ES">España</option>
-            <option value="MX">México</option>
+            <option value="MX" selected>México</option>
             <option value="AR">Argentina</option>
             <option value="CO">Colombia</option>
             <option value="CL">Chile</option>
@@ -111,7 +111,7 @@
         <h2 class="form-section-title">Pago</h2>
         <p style="font-size:13px;color:var(--gray);margin-bottom:1rem">
           Todos los datos de tarjeta son procesados de forma segura por Stripe.
-          Ahara nunca almacena tu información de pago.
+          Dark Rebel nunca almacena tu información de pago.
         </p>
         <div id="stripe-card-element"></div>
         <div id="payment-message"></div>
@@ -153,7 +153,7 @@
       <div style="margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.5rem">
         <label style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:.5rem">Código de descuento</label>
         <div style="display:flex;gap:0">
-          <input type="text" id="promo-input" placeholder="AHARA10" style="border-right:none">
+          <input type="text" id="promo-input" placeholder="DARKREBEL10" style="border-right:none">
           <button class="btn btn-outline" onclick="applyPromo()" style="flex-shrink:0;white-space:nowrap;border-radius:0">Aplicar</button>
         </div>
         <div id="promo-msg" style="font-size:13px;margin-top:.5rem"></div>
@@ -173,7 +173,7 @@
   let discount = 0;
 
   const PROMO_CODES = {
-    'AHARA10': 0.10,
+    'DARKREBEL10': 0.10,
     'BIENVENIDO': 0.15,
     'VIP20': 0.20
   };
@@ -335,7 +335,7 @@
     btn.disabled = true;
     setTimeout(() => {
       Cart.clear();
-      const orderId = 'AHR-' + Date.now().toString(36).toUpperCase();
+      const orderId = 'DRK-' + Date.now().toString(36).toUpperCase();
       window.location = `/pages/success.html?order=${orderId}`;
     }, 1800);
   }

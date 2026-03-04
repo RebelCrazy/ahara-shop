@@ -1,5 +1,5 @@
 /**
- * AHARA SHOP — JavaScript Principal
+ * DARK REBEL SHOP — JavaScript Principal
  * Cart, UI, interacciones
  */
 
@@ -7,7 +7,7 @@
 // CART ENGINE
 // ============================================================
 const Cart = {
-  key: 'ahara_cart',
+  key: 'darkrebel_cart',
 
   get() {
     try { return JSON.parse(localStorage.getItem(this.key)) || []; }
