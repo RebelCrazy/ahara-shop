@@ -201,7 +201,7 @@ const Products = {
 // RENDER HELPERS
 // ============================================================
 function fmt(n) {
-  return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(n);
+  return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(n);
 }
 
 function renderProductCard(product) {
