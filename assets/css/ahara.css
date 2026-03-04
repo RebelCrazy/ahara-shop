@@ -145,7 +145,8 @@ input:focus, textarea:focus, select:focus {
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: .1em;
-  
+  color: #ffffff;
+  background: transparent;
   padding: .5vw 2vw;
   white-space: nowrap;
   flex-shrink: 0;
