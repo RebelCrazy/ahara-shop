@@ -1,4 +1,4 @@
-# 🛍 Ahara Shop
+# 🛍 Dark Rebel
 
 Tienda online estática basada en el tema WordPress **Ahara**, convertida para correr completamente en **GitHub + Cloudflare Pages + Workers** sin necesidad de servidor propio.
 
