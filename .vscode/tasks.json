@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Servidor local",
+			"type": "shell",
+			"command": "npx serve . -p 3000",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Servidor local Python",
+			"type": "shell",
+			"command": "C:/workspace/ahara-shop/.venv/Scripts/python.exe -m http.server 3000",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}
